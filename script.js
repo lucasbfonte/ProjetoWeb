@@ -6,31 +6,54 @@ let addSubjectButton = document.getElementById("addSubjectButton");
 let subjectList = document.getElementById("subjectList");
 let subjects = [];
 let subjectSelect = document.getElementById("subjectSelect");
+let tasks = [];
 
-function addSubject() {
+
+// MATÉRIAS:
+
+
+function addSubject() { // Função para adicionar uma nova matéria
 
     if (subjectInput.value.trim() !== "") {
-        let subjectAdd = document.createElement("li");
+
         let subjectName = subjectInput.value;
-        subjectAdd.textContent = subjectInput.value;
-        subjectList.appendChild(subjectAdd);
+    
         subjects.push(subjectName);
+        localStorage.setItem("subjects", JSON.stringify(subjects));
         subjectInput.value = "";
-
-        let subjectOption = document.createElement("option");
-        subjectOption.textContent = subjectName;
-        subjectSelect.appendChild(subjectOption);
-
-        let removeSubjectButton = document.createElement("button");
-        removeSubjectButton.textContent = " Remover";
-        subjectAdd.appendChild(removeSubjectButton);
-        removeSubjectButton.addEventListener("click", function() {
-            subjectList.removeChild(subjectAdd);
-            subjects = subjects.filter(s => s !== subjectName);
-            subjectSelect.removeChild(subjectOption); 
-        });
+        createSubject(subjectName);
     }
 }
+
+function createSubject(subjectName) { // Função para criar a matéria na lista e no select
+
+    let subjectAdd = document.createElement("li");
+    subjectAdd.textContent = subjectName;
+    subjectList.appendChild(subjectAdd);
+
+    let subjectOption = document.createElement("option");
+    subjectOption.textContent = subjectName;
+    subjectSelect.appendChild(subjectOption);
+
+    let removeSubjectButton = document.createElement("button");
+    removeSubjectButton.textContent = " Remover";
+    subjectAdd.appendChild(removeSubjectButton);
+    removeSubjectButton.addEventListener("click", function() {
+        subjectList.removeChild(subjectAdd);
+        subjects = subjects.filter(s => s !== subjectName);
+        localStorage.setItem("subjects", JSON.stringify(subjects));
+        subjectSelect.removeChild(subjectOption); 
+        });
+ }
+
+let savedSubjects = localStorage.getItem("subjects");
+if (savedSubjects) {
+    subjects = JSON.parse(savedSubjects);
+    subjects.forEach(function(subject) {
+        createSubject(subject);
+    });
+}
+
 addSubjectButton.addEventListener("click", addSubject);
 subjectInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -38,58 +61,102 @@ subjectInput.addEventListener("keydown", function(event) {
     }
 });
 
+
+// TAREFAS:
+
+
+
 function addTask() {
     if (taskInput.value.trim() !== "" && subjectSelect.value !== "") {
-        let taskAdd = document.createElement("li");
+
         let selectedSubject = subjectSelect.value;
-        taskAdd.textContent = taskInput.value + " - " + selectedSubject;
-        taskList.appendChild(taskAdd);
+
+        let task = {
+            name: taskInput.value,
+            subject: selectedSubject,
+            completed: false
+        };
+        tasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        createTask(task);
         taskInput.value = "";  
 
-        let completeButton = document.createElement("button");
-        completeButton.textContent = "";
-        taskAdd.appendChild(completeButton);
-        let isComp = false;
-        completeButton.addEventListener("click", function() {
-            if (!isComp){
-                completeButton.textContent = "✓";
-                completeButton.style.color = "green";
-                taskAdd.style.textDecoration = "line-through";
-                isComp = true;
-            } else {
-                completeButton.textContent = "";
-                completeButton.style.color = "black";
-                taskAdd.style.textDecoration = "none";
-                isComp = false;
-            }
-        });
-        completeButton.addEventListener("mouseover", function() {
-            if (!isComp){
-                completeButton.textContent = "✓";
-                completeButton.style.color = "green";
-            } else {
-                completeButton.textContent = "✗"; 
-                completeButton.style.color = "red";
-            }
-        });
-        completeButton.addEventListener("mouseout", function() { 
-            if (!isComp){
-                completeButton.textContent = "";
-            } else {
-                completeButton.textContent = "✓";
-                completeButton.style.color = "green";
-            }
-        });
-    
-        let removeTaskButton = document.createElement("button");
-        removeTaskButton.textContent = " Remover";
-        taskAdd.appendChild(removeTaskButton);
-        removeTaskButton.addEventListener("click", function() {
-            taskList.removeChild(taskAdd);
-        });
     }
 }
 
+
+
+
+function createTask(task) {
+    let taskAdd = document.createElement("li");
+    taskAdd.textContent = task.name + " - " + task.subject;
+    taskList.appendChild(taskAdd);
+
+    let completeButton = document.createElement("button");
+    completeButton.textContent = "";
+    taskAdd.appendChild(completeButton);
+    completeButton.addEventListener("click", function() {
+        if (!task.completed){
+            completeButton.textContent = "✓";
+            completeButton.style.color = "green";
+            taskAdd.style.textDecoration = "line-through";
+            task.completed = true;
+        } else {
+            completeButton.textContent = "";
+            completeButton.style.color = "black";
+            taskAdd.style.textDecoration = "none";
+            task.completed = false;
+        }
+       localStorage.setItem("tasks", JSON.stringify(tasks));
+    });
+
+    completeButton.addEventListener("mouseover", function() {
+        if (!task.completed){
+            completeButton.textContent = "✓";
+            completeButton.style.color = "green";
+        } else {
+            completeButton.textContent = "✗"; 
+            completeButton.style.color = "red";
+        }
+    });
+
+    completeButton.addEventListener("mouseout", function() { 
+        if (!task.completed){
+            completeButton.textContent = "";
+        } else {
+            completeButton.textContent = "✓";
+            completeButton.style.color = "green";
+        }
+    });
+
+    if (task.completed) {
+    completeButton.textContent = "✓";
+    completeButton.style.color = "green";
+    taskAdd.style.textDecoration = "line-through";
+    }
+
+    let removeTaskButton = document.createElement("button");
+    removeTaskButton.textContent = " Remover";
+    taskAdd.appendChild(removeTaskButton);
+    removeTaskButton.addEventListener("click", function() {
+        taskList.removeChild(taskAdd);
+        tasks = tasks.filter(t => t !== task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    });
+}
+
+
+
+let savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+        tasks = JSON.parse(savedTasks);
+        tasks.forEach(function(task) {
+            createTask(task);
+        });
+    }
+
+
+    
 addTaskButton.addEventListener("click", addTask);
 taskInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -97,5 +164,4 @@ taskInput.addEventListener("keydown", function(event) {
     }
 });
 
-    
 
