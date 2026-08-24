@@ -1,1 +1,132 @@
-console.log("Study Planner iniciado!");
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #0d1117;
+    color: #e6edf3;
+}
+
+h1 {
+    text-align: center;
+    color: #e6edf3;
+}
+
+h2 {
+    color: #e6edf3;
+    margin-top: 20px;
+}
+
+p {
+    text-align: center;
+}
+
+section {
+    background-color: #101b22;    
+    padding: 20px;
+    margin-top: 25px;
+    border: 1px solid #30363d;
+    border-radius: 5px;
+}
+
+input,
+select {
+    background-color: #0d1117;
+    color: #e6edf3;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    box-sizing: border-box;
+    height: 38px;
+}
+
+select:hover {
+    border-color: #58a6ff;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #58a6ff;
+}
+
+button { 
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 38px;
+}
+
+#addSubjectButton,
+#addTaskButton {
+    background-color: #1f883d;
+    color: white;
+    border: 1px solid rgba(31, 35, 40, 0.15);
+}
+
+#addSubjectButton:hover,
+#addTaskButton:hover {
+    background-color: #1a7f37;
+}
+
+#subjectList li {
+    background-color: #101b22;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+#subjectList li:hover {
+    background-color: #262c33;
+}
+
+.removeButton {
+    background-color: #21262d;
+    color: #f85149;
+    border: 1px solid #30363d;
+}
+
+.removeButton:hover {
+    background-color: #f85149;
+    color: #ffffff;
+}
+
+.completeButton {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    margin-left: 8px;
+    background-color: #21262d;
+    color: #8b949e;
+    border: 1px solid #30363d;
+    border-radius: 50%;
+    font-size: 14px;
+}
+
+li {
+    background-color: #21262d;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+}
+
+li:hover {
+    background-color: #262c33;
+}
+
+li span {
+    flex: 1;
+}
+
+li button {
+    margin-left: 8px;
+}

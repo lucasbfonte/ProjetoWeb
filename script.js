@@ -28,7 +28,9 @@ function addSubject() { // Função para adicionar uma nova matéria
 function createSubject(subjectName) { // Função para criar a matéria na lista e no select
 
     let subjectAdd = document.createElement("li");
-    subjectAdd.textContent = subjectName;
+    let subjectText = document.createElement("span");
+    subjectText.textContent = subjectName;
+    subjectAdd.appendChild(subjectText);
     subjectList.appendChild(subjectAdd);
 
     let subjectOption = document.createElement("option");
@@ -36,6 +38,7 @@ function createSubject(subjectName) { // Função para criar a matéria na lista
     subjectSelect.appendChild(subjectOption);
 
     let removeSubjectButton = document.createElement("button");
+    removeSubjectButton.classList.add("removeButton");
     removeSubjectButton.textContent = " Remover";
     subjectAdd.appendChild(removeSubjectButton);
     removeSubjectButton.addEventListener("click", function() {
@@ -89,22 +92,25 @@ function addTask() {
 
 function createTask(task) {
     let taskAdd = document.createElement("li");
-    taskAdd.textContent = task.name + " - " + task.subject;
+    let taskText = document.createElement("span");
+    taskText.textContent = task.name + " - " + task.subject;
+    taskAdd.appendChild(taskText);
     taskList.appendChild(taskAdd);
 
     let completeButton = document.createElement("button");
+    completeButton.classList.add("completeButton");
     completeButton.textContent = "";
     taskAdd.appendChild(completeButton);
     completeButton.addEventListener("click", function() {
         if (!task.completed){
             completeButton.textContent = "✓";
             completeButton.style.color = "green";
-            taskAdd.style.textDecoration = "line-through";
+            taskText.style.textDecoration = "line-through";
             task.completed = true;
         } else {
             completeButton.textContent = "";
             completeButton.style.color = "black";
-            taskAdd.style.textDecoration = "none";
+            taskText.style.textDecoration = "none";
             task.completed = false;
         }
        localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -114,28 +120,33 @@ function createTask(task) {
         if (!task.completed){
             completeButton.textContent = "✓";
             completeButton.style.color = "green";
+            completeButton.style.borderColor = "green";
         } else {
             completeButton.textContent = "✗"; 
             completeButton.style.color = "red";
+            completeButton.style.borderColor = "red";
         }
     });
 
     completeButton.addEventListener("mouseout", function() { 
         if (!task.completed){
             completeButton.textContent = "";
+            completeButton.style.borderColor = "#30363d";
         } else {
             completeButton.textContent = "✓";
             completeButton.style.color = "green";
+            completeButton.style.borderColor = "#30363d";
         }
     });
 
     if (task.completed) {
     completeButton.textContent = "✓";
     completeButton.style.color = "green";
-    taskAdd.style.textDecoration = "line-through";
+    taskText.style.textDecoration = "line-through";
     }
 
     let removeTaskButton = document.createElement("button");
+    removeTaskButton.classList.add("removeButton");
     removeTaskButton.textContent = " Remover";
     taskAdd.appendChild(removeTaskButton);
     removeTaskButton.addEventListener("click", function() {
@@ -156,7 +167,7 @@ let savedTasks = localStorage.getItem("tasks");
     }
 
 
-    
+
 addTaskButton.addEventListener("click", addTask);
 taskInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
