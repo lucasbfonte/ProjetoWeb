@@ -12,6 +12,8 @@ Além disso, foi utilizado LocalStorage para que as informações permaneçam sa
 
 ![Prévia do Study Planner](images/projetoPreview.png)
 
-## Como utilizar
+## Como acessar o site
 
-Abra o arquivo `index.html` em um navegador.
+🔗 **[Acessar o Study Planner](https://lucasbfonte.github.io/ProjetoWeb/)**
+
+Ou abra o arquivo `index.html` em um navegador
